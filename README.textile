@@ -8,9 +8,10 @@ You need to first install Intel MKL, Eigen and MAGMA. It has been tested with In
 
 h2. Modus Operandis
 
-* Clone the project locally.
+* Clone the Eigen-Magma project: https://github.com/bravegag/eigen-magma
+* Clone this project locally.
 * Export the following variables
-<pre><code>export EIGEN3_INCLUDE_DIR=<your eigen install location>
+<pre><code>export EIGEN3_INCLUDE_DIR=<location where you cloned eigen-magma>
 export MAGMA_ROOT=<your magma install location>
 </code></pre> 
 
