@@ -21,8 +21,7 @@ rm -rf build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_
 </code></pre> 
 
 * Edit the CMakeLists.txt file and enable Eigen only, MKL or MAGMA by commenting or uncommenting the following definitions:
-<pre><code>
-add_definitions(-DEIGEN_USE_MKL_ALL)
+<pre><code>add_definitions(-DEIGEN_USE_MKL_ALL)
 add_definitions(-DEIGEN_USE_MAGMA_ALL)
 </code></pre>  
 
@@ -37,3 +36,5 @@ The following plots where obtained by executing the two currently ported Eigen M
 !https://github.com/bravegag/eigen-magma-benchmark/blob/master/results/dgemm_gflops.png(dgemm Gflops)!
 
 !https://github.com/bravegag/eigen-magma-benchmark/blob/master/results/dgeqp3_gflops.png(dgeqp3 Gflops)!
+
+The benchmarks above where obtained using <code>export MKL_NUM_THREADS=1</code> and <code>export OMP_NUM_THREADS=1</code> increasing the <code>MKL_NUM_THREADS</code> may improve the results for both the MKL and the MAGMA versions.
