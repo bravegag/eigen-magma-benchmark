@@ -1,0 +1,37 @@
+h1. Eigen Magma benchmark
+ 
+This project provides a simple benchmarking facility for Eigen. It was developed mainly for benchmarking the Eigen MAGMA backend implementation. 
+
+h2. Requirements
+
+You need to first install Intel MKL, Eigen and MAGMA. It has been tested with Intel Parallel Studio 2013, Eigen 3.2.0 and MAGMA 1.4.0-beta2. 
+
+h2. Modus Operandis
+
+* Clone the project locally.
+* Export the following variables
+<pre><code>
+export EIGEN3_INCLUDE_DIR=<your eigen install location>
+export MAGMA_ROOT=<your magma install location>
+</code></pre> 
+
+* Create a Release build with the following command:
+<pre><code>
+rm -rf build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=icc -DCMAKE_CXX_COMPILER=icpc -DCMAKE_Fortran_COMPILER=ifort ../src
+</code></pre> 
+
+* Edit the CMakeLists.txt file and enable Eigen only, MKL or MAGMA by commenting or uncommenting the following definitions:
+<pre><code>
+add_definitions(-DEIGEN_USE_MKL_ALL)
+add_definitions(-DEIGEN_USE_MAGMA_ALL)
+</code></pre>  
+
+* Execute <pre>./benchmark</pre> or use <pre>./benchmark --help</pre> for help. 
+
+h2. Results
+
+The following plots where obtained by executing the two currently ported Eigen MAGMA backends dgemm and dgeqp3:
+
+!https://github.com/bravegag/eigen-magma-benchmark/blob/master/results/dgemm_gflops.png(dgemm Gflops)!
+
+!https://github.com/bravegag/eigen-magma-benchmark/blob/master/results/dgeqp3_gflops.png(dgeqp3 Gflops)!
