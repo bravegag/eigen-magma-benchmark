@@ -26,7 +26,9 @@ add_definitions(-DEIGEN_USE_MKL_ALL)
 add_definitions(-DEIGEN_USE_MAGMA_ALL)
 </code></pre>  
 
-* Execute <pre>./benchmark</pre> or use <pre>./benchmark --help</pre> for help. 
+* Build the project executing <code>make</code> to have faster compilation with more threads e.g. 5 use <code>make -j5</code>
+
+* Execute the benchmark <code>./benchmark</code> or use <code>./benchmark --help</code> for help. 
 
 h2. Results
 
