@@ -14,7 +14,7 @@ h2. Modus Operandis
 export MAGMA_ROOT=<your magma install location>
 </code></pre> 
 
-* Create a Release build with the following command:
+* Create a Release build with the following command (using Intel compiler):
 <pre><code>rm -rf build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=icc -DCMAKE_CXX_COMPILER=icpc -DCMAKE_Fortran_COMPILER=ifort ../src
 </code></pre> 
 
