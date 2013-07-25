@@ -30,7 +30,8 @@ dfa <- NULL
 dfa_mt <- NULL
 
 # read the relevant files
-file_names <- c('dgemm_eigen', 'dgemm_mkl', 'dgemm_magma')
+file_names <- c('dgeqp3_eigen', 'dgeqp3_mkl', 'dgeqp3_magma')
+#file_names <- c('dgemm_eigen', 'dgemm_mkl', 'dgemm_magma')
 labels <- c('eigen', 'mkl', 'magma')
 i <- 1
 for (f in file_names) {
@@ -78,16 +79,16 @@ p <- ggplot(data=df, mapping=aes(x=n, y=gflops, colour=baseline)) +
  scale_x_continuous(expand=c(0,0), breaks=seq(0,5000,by=1000), limit=c(0,max(df$n + 800))) +
  geom_hline(aes(yintercept=0)) +
  scale_y_continuous("[Gflop/s]", limit=c(0,200), expand=c(0,0)) + 
- labs(title="Gflops dgemm, Xeon E5-2690, nVidia GTX Titan")
+ labs(title="Gflops dgeqp3, Xeon E5-2690, nVidia GTX Titan")
 
 p <- direct.label(p, list("last.qp",vjust=0.3,hjust=-0.2,fontfamily="sans",fontsize=15,fontface="plain"))
 
 dev.new(width=7, height=5)
 p
 
-filename <- paste(basedir, 'dgemm_gflops.svg',sep="")
+filename <- paste(basedir, 'dgeqp3_gflops.svg',sep="")
 ggsave(filename=filename, width=7, height=4)
 embed_fonts(filename)
-filename <- paste(basedir, 'dgemm_gflops.png',sep="")
+filename <- paste(basedir, 'dgeqp3_gflops.png',sep="")
 ggsave(filename=filename, width=7, height=4)
 embed_fonts(filename)
