@@ -54,7 +54,7 @@ using namespace boost::accumulators;
 using namespace boost::chrono;
 namespace po = boost::program_options;
 
-typedef double (*workload_type)(int);
+typedef double (*workload_type)(long);
 
 typedef accumulator_set<double, stats<tag::mean, tag::variance> > bench_accumulator;
 static bench_accumulator real_time_acc, gflops_acc;
@@ -67,11 +67,14 @@ VectorXd a, b, c;
 /**
  * Generic benchmarking, implement the different workload types according to the expected signature.
  */
-static void run_benchmark(int N, int warm_ups, int num_runs, workload_type workload) {
+static void run_benchmark(long N, int warm_ups, int num_runs, workload_type workload) {
 	// warm up runs
 	for (int i = 0; i < warm_ups; ++i) {
 		// invoke workload
 		(*workload)(N);
+
+		fprintf(stderr, ".");
+        	fflush (stderr);
 	}
 
 	// actual measurements
@@ -94,18 +97,19 @@ static void run_benchmark(int N, int warm_ups, int num_runs, workload_type workl
 		// feed the accumulators
 		real_time_acc(real_time);
 		gflops_acc(gflops);
+
+		fprintf(stderr, ".");
+        	fflush (stderr);
 	}
-	fprintf(stderr, ".");
-	fflush (stderr);
 }
 
-static double dgemm(int N) {
+static double dgemm(long N) {
 	C = A*B;
 	// flops see http://www.netlib.org/lapack/lawnspdf/lawn41.pdf page 120
 	return 2*N*N*N;
 }
 
-static double dgeqp3(int N) {
+static double dgeqp3(long N) {
 	Eigen::ColPivHouseholderQR<MatrixXd> qr = A.colPivHouseholderQr();
 	// flops see http://www.netlib.org/lapack/lawnspdf/lawn41.pdf page 121
 	return N*N*N - (2/3)*N*N*N + N*N + N*N + (14/3)*N;
@@ -125,9 +129,9 @@ int main(int argc, char** argv) {
 		po::options_description desc("Benchmark main options");
 		desc.add_options()("help", "produce help message")
 			("warm-up-runs", po::value<int>(&warm_ups)->default_value(3), "warm up runs e.g. 3")
-			("num-runs"	   , po::value<int>(&num_runs)->default_value(10), "number of runs e.g. 10")
-			("function"	   , po::value<string>(&function)->default_value("dgemm"), "Function to test e.g. dgemm, dgeqp3");
-			("range"   	   , po::value<string>(&range)->default_value("1024:5120:1024"), "N range i.e. start:stop:step");
+			("num-runs", po::value<int>(&num_runs)->default_value(10), "number of runs e.g. 10")
+			("function", po::value<string>(&function)->default_value("dgemm"), "Function to test e.g. dgemm, dgeqp3")
+			("range", po::value<string>(&range)->default_value("1024:10240:1024"), "N range i.e. start:stop:step");
 
 		po::variables_map vm;
 		po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -138,10 +142,11 @@ int main(int argc, char** argv) {
 			return EXIT_FAILURE;
 
 		} else {
-			boost::tokenizer<> tok(range);
-			vector<int> range_values;
+			string temp = range;
+			boost::tokenizer<> tok(temp);
+			vector<long> range_values;
 			for (boost::tokenizer<>::iterator current = tok.begin(); current != tok.end(); ++current) {
-				range_values.push_back(boost::lexical_cast<int>(*current));
+				range_values.push_back(boost::lexical_cast<long>(*current));
 			}
 
 			if (range_values.size() != 3) {
@@ -158,7 +163,7 @@ int main(int argc, char** argv) {
 				throw "Sorry, the function '" + function + "' is not yet implemented.";
 			}
 
-			for (int N = range_values[0]; N < range_values[1]; N += range_values[2]) {
+			for (long N = range_values[0]; N < range_values[1]; N += range_values[2]) {
 				// prepare the input data
 				A = MatrixXd::Random(N, N);
 				B = MatrixXd::Random(N, N);
@@ -171,12 +176,20 @@ int main(int argc, char** argv) {
 
 				fprintf(stdout, "%d\t%e\t%e\n", N, mean(real_time_acc), mean(gflops_acc));
 				fflush(stdout);
+				fprintf(stderr, "%d,%e,%e\n"  , N, mean(real_time_acc), mean(gflops_acc));
+				fflush(stderr);
 			}
 		}
-	} catch (std::exception& e) {
+	} 
+	catch (std::exception& e) {
 		cerr << "Exception: " << e.what() << "\n";
 		return EXIT_FAILURE;
-	} catch (...) {
+	}
+	catch (string& e) {
+		cerr << "Exception: " << e << "\n";
+		return EXIT_FAILURE;
+ 	} 
+	catch (...) {
 		cerr << "Exception of unknown type!\n";
 		return EXIT_FAILURE;
 	}
