@@ -10,8 +10,7 @@ h2. Modus Operandis
 
 * Clone the project locally.
 * Export the following variables
-<pre><code>
-export EIGEN3_INCLUDE_DIR=<your eigen install location>
+<pre><code>export EIGEN3_INCLUDE_DIR=<your eigen install location>
 export MAGMA_ROOT=<your magma install location>
 </code></pre> 
 
