@@ -15,8 +15,7 @@ export MAGMA_ROOT=<your magma install location>
 </code></pre> 
 
 * Create a Release build with the following command:
-<pre><code>
-rm -rf build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=icc -DCMAKE_CXX_COMPILER=icpc -DCMAKE_Fortran_COMPILER=ifort ../src
+<pre><code>rm -rf build; mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=icc -DCMAKE_CXX_COMPILER=icpc -DCMAKE_Fortran_COMPILER=ifort ../src
 </code></pre> 
 
 * Edit the CMakeLists.txt file and enable Eigen only, MKL or MAGMA by commenting or uncommenting the following definitions:
