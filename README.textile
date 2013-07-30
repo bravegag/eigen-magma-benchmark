@@ -1,6 +1,6 @@
 h1. Eigen Magma benchmark
  
-This project provides a simple benchmarking facility for Eigen. It was developed mainly for benchmarking the Eigen MAGMA backend implementation. This project also serves as sample CMqke project to use Eigen in combination with MAGMA and MKL. 
+This project provides a simple benchmarking facility for Eigen. It was developed mainly for benchmarking the Eigen MAGMA backend implementation. This project also serves as sample CMake project to use Eigen in combination with MAGMA and MKL. 
 
 h2. Requirements
 
