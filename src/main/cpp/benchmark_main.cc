@@ -115,6 +115,11 @@ static double dgeqp3(long N) {
 	return N*N*N - (2/3)*N*N*N + N*N + N*N + (14/3)*N;
 }
 
+static double dgemv(long N) {
+	C = A*b;
+	return 2*N*N - N;
+}
+
 int main(int argc, char** argv) {
 #if !defined(NDEBUG) || defined(DEBUG)
 	fprintf(stderr, "Warning: you are running in debug mode - assertions are enabled. \n");
@@ -159,6 +164,9 @@ int main(int argc, char** argv) {
 			} else
 			if (function == "dgeqp3") {
 				workload = dgeqp3;
+			} else
+			if (function == "dgemv") {
+				workload = dgemv;	
 			} else {
 				throw "Sorry, the function '" + function + "' is not yet implemented.";
 			}
@@ -167,6 +175,7 @@ int main(int argc, char** argv) {
 				// prepare the input data
 				A = MatrixXd::Random(N, N);
 				B = MatrixXd::Random(N, N);
+				b = VectorXd::Random(N);
 
 				real_time_acc = bench_accumulator();
 				gflops_acc = bench_accumulator();
