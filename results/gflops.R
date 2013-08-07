@@ -30,9 +30,11 @@ dfa <- NULL
 dfa_mt <- NULL
 
 # read the relevant files
-file_names <- c('dgemv_eigen', 'dgemv_mkl', 'dgemv_magma')
-#file_names <- c('dgeqp3_eigen', 'dgeqp3_mkl', 'dgeqp3_magma')
-#file_names <- c('dgemm_eigen', 'dgemm_mkl', 'dgemm_magma')
+#func_name <- "dgemv"
+func_name <- "dgeqp3"
+#func_name <- "dgemm"
+
+file_names <- c(paste(func_name, '_eigen', sep=""), paste(func_name, '_mkl', sep=""), paste(func_name, '_magma', sep=""))
 labels <- c('eigen', 'mkl', 'magma')
 i <- 1
 for (f in file_names) {
@@ -60,7 +62,7 @@ for (f in file_names) {
 dfa <- dfa[with(dfa, order(baseline, n)), ]
 
 # =========================================================================================
-# Define utility functions
+# Define utility function
 # =========================================================================================
 
 df <- dfa
@@ -79,17 +81,17 @@ p <- ggplot(data=df, mapping=aes(x=n, y=gflops, colour=baseline)) +
  scale_size_discrete(range=c(0.5,1), guide="none") +
  scale_x_continuous(expand=c(0,0), breaks=seq(0,5000,by=1000), limit=c(0,max(df$n + 800))) +
  geom_hline(aes(yintercept=0)) +
- scale_y_continuous("[Gflop/s]", limit=c(0,10), expand=c(0,0)) + 
- labs(title="Gflops dgeqp3, Xeon E5-2690, nVidia GTX Titan")
+ scale_y_continuous("[Gflop/s]", limit=c(0,50), expand=c(0,0)) + 
+ labs(title=paste("Gflops ", func_name, ", Xeon E5-2690, nVidia GTX Titan", sep=""))
 
 p <- direct.label(p, list("last.qp",vjust=0.3,hjust=-0.2,fontfamily="sans",fontsize=15,fontface="plain"))
 
 dev.new(width=7, height=5)
 p
 
-filename <- paste(basedir, 'dgemv_gflops.svg',sep="")
+filename <- paste(basedir, paste(func_name, '_gflops.svg', sep=""),sep="")
 ggsave(filename=filename, width=7, height=4)
 embed_fonts(filename)
-filename <- paste(basedir, 'dgemv_gflops.png',sep="")
+filename <- paste(basedir, paste(func_name, '_gflops.png', sep=""),sep="")
 ggsave(filename=filename, width=7, height=4)
 embed_fonts(filename)
