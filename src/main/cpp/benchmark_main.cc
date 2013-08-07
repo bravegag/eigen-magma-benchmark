@@ -62,6 +62,7 @@ static bench_accumulator real_time_acc, gflops_acc;
 // reusable vector and matrices
 MatrixXd A, B, C;
 VectorXd a, b, c;
+Eigen::ColPivHouseholderQR<MatrixXd> Aqr;
 
 /// Generic benchmarking
 /**
@@ -120,6 +121,11 @@ static double dgemv(long N) {
 	return 2*N*N - N;
 }
 
+static double dtrsm(long N) {
+	C = Aqr.solve(B);
+	return N*N*N;
+}
+
 int main(int argc, char** argv) {
 #if !defined(NDEBUG) || defined(DEBUG)
 	fprintf(stderr, "Warning: you are running in debug mode - assertions are enabled. \n");
@@ -166,16 +172,25 @@ int main(int argc, char** argv) {
 				workload = dgeqp3;
 			} else
 			if (function == "dgemv") {
-				workload = dgemv;	
+				workload = dgemv;
+			} else
+			if (function == "dtrsm") {
+				workload = dtrsm;
 			} else {
 				throw "Sorry, the function '" + function + "' is not yet implemented.";
 			}
 
+
 			for (long N = range_values[0]; N < range_values[1]; N += range_values[2]) {
-				// prepare the input data
-				A = MatrixXd::Random(N, N);
-				B = MatrixXd::Random(N, N);
-				b = VectorXd::Random(N);
+                        	// prepare the input data
+                        	A = MatrixXd::Random(N, N);
+                        	B = MatrixXd::Random(N, N);
+                        	b = VectorXd::Random(N);
+
+				if (function == "dtrsm") {
+					// input data specific only to this function
+                                	Aqr = A.colPivHouseholderQr();
+				}
 
 				real_time_acc = bench_accumulator();
 				gflops_acc = bench_accumulator();
