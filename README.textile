@@ -30,7 +30,7 @@ add_definitions(-DEIGEN_USE_MAGMA_ALL)
 
 h2. Results
 
-The following plots where obtained by executing the two currently ported Eigen MAGMA backends dgemm and dgeqp3:
+The following plots where obtained by executing the currently ported Eigen MAGMA backends dgemm, dgeqp3 and dgemv:
 
 !https://github.com/bravegag/eigen-magma-benchmark/blob/master/results/dgemm_gflops.png(dgemm Gflops)!
 
