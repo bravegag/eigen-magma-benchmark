@@ -30,8 +30,8 @@ dfa <- NULL
 dfa_mt <- NULL
 
 # read the relevant files
-#func_name <- "dgemv"
-func_name <- "dgeqp3"
+func_name <- "dgemv"
+#func_name <- "dgeqp3"
 #func_name <- "dgemm"
 
 file_names <- c(paste(func_name, '_eigen', sep=""), paste(func_name, '_mkl', sep=""), paste(func_name, '_magma', sep=""))
@@ -79,9 +79,9 @@ p <- ggplot(data=df, mapping=aes(x=n, y=gflops, colour=baseline)) +
  geom_path(aes(size=main),size=0.8) + geom_point(size=3.2) + 
  geom_path(data=df[df$main,],size=0.75,colour="red") + geom_point(data=df[df$main,],size=3.0,colour="red") +
  scale_size_discrete(range=c(0.5,1), guide="none") +
- scale_x_continuous(expand=c(0,0), breaks=seq(0,5000,by=1000), limit=c(0,max(df$n + 800))) +
+ scale_x_continuous(expand=c(0,0), breaks=seq(0,10000,by=1000), limit=c(0,max(df$n + 1500))) +
  geom_hline(aes(yintercept=0)) +
- scale_y_continuous("[Gflop/s]", limit=c(0,50), expand=c(0,0)) + 
+ scale_y_continuous("[Gflop/s]", limit=c(0,10), expand=c(0,0)) + 
  labs(title=paste("Gflops ", func_name, ", Xeon E5-2690, nVidia GTX Titan", sep=""))
 
 p <- direct.label(p, list("last.qp",vjust=0.3,hjust=-0.2,fontfamily="sans",fontsize=15,fontface="plain"))
