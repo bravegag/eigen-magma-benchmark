@@ -30,7 +30,8 @@ dfa <- NULL
 dfa_mt <- NULL
 
 # read the relevant files
-func_name <- "dgemv"
+func_name <- "dtrsm"
+#func_name <- "dgemv"
 #func_name <- "dgeqp3"
 #func_name <- "dgemm"
 
@@ -81,7 +82,7 @@ p <- ggplot(data=df, mapping=aes(x=n, y=gflops, colour=baseline)) +
  scale_size_discrete(range=c(0.5,1), guide="none") +
  scale_x_continuous(expand=c(0,0), breaks=seq(0,10000,by=1000), limit=c(0,max(df$n + 1500))) +
  geom_hline(aes(yintercept=0)) +
- scale_y_continuous("[Gflop/s]", limit=c(0,10), expand=c(0,0)) + 
+ scale_y_continuous("[Gflop/s]", limit=c(0,5), expand=c(0,0)) + 
  labs(title=paste("Gflops ", func_name, ", Xeon E5-2690, nVidia GTX Titan", sep=""))
 
 p <- direct.label(p, list("last.qp",vjust=0.3,hjust=-0.2,fontfamily="sans",fontsize=15,fontface="plain"))
