@@ -30,7 +30,8 @@ dfa <- NULL
 dfa_mt <- NULL
 
 # read the relevant files
-func_name <- "dtrsm"
+func_name <- "dpotrf"
+#func_name <- "dtrsm"
 #func_name <- "dgemv"
 #func_name <- "dgeqp3"
 #func_name <- "dgemm"
