@@ -15,7 +15,7 @@ add_definitions(-Wno-shadow)
 #add_definitions(-std=c++11)
 
 #add_definitions(-DEIGEN_USE_MKL_ALL)
-#add_definitions(-DEIGEN_USE_MAGMA_ALL)
+add_definitions(-DEIGEN_USE_MAGMA_ALL)
 
 #*************************************************
 # Project source directories
