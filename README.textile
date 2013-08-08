@@ -9,7 +9,7 @@ You need to first install Intel MKL, Eigen, CUDA and MAGMA. It has been tested w
 h2. Modus Operandis
 
 * Clone the Eigen-Magma project: https://github.com/bravegag/eigen-magma
-* Clone this project locally.
+* Clone this project: https://github.com/bravegag/eigen-magma-benchmark
 * Export the following variables
 <pre><code>export EIGEN3_INCLUDE_DIR=<location where you cloned eigen-magma>
 export MAGMA_ROOT=<your magma install location>
