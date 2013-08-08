@@ -126,12 +126,21 @@ static double dtrsm(long N) {
 	return N*N*N;
 }
 
+static double dpotrf(long N) {
+	Eigen::LLT<MatrixXd> lltOfA(A);
+	MatrixXd L = lltOfA.matrixL();
+	return N*N*N/3.0 + N*N/2.0 + N/6.0;
+}
+
 int main(int argc, char** argv) {
 #if !defined(NDEBUG) || defined(DEBUG)
 	fprintf(stderr, "Warning: you are running in debug mode - assertions are enabled. \n");
 #endif
 
 	try {
+#if defined(EIGEN_USE_MAGMA_ALL)
+		MAGMA_INIT();
+#endif
 		// program arguments
 		string function;
 		string range;
@@ -176,6 +185,9 @@ int main(int argc, char** argv) {
 			} else
 			if (function == "dtrsm") {
 				workload = dtrsm;
+			} else
+			if (function == "dpotrf") {
+				workload = dpotrf;
 			} else {
 				throw "Sorry, the function '" + function + "' is not yet implemented.";
 			}
@@ -204,6 +216,10 @@ int main(int argc, char** argv) {
 				fflush(stderr);
 			}
 		}
+
+#if defined(EIGEN_USE_MAGMA_ALL)
+		MAGMA_FINALIZE();
+#endif
 	} 
 	catch (std::exception& e) {
 		cerr << "Exception: " << e.what() << "\n";
