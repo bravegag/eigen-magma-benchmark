@@ -4,7 +4,7 @@ This project provides a simple benchmarking facility for Eigen. It was developed
 
 h2. Requirements
 
-You need to first install Intel MKL, Eigen and MAGMA. It has been tested with Intel Parallel Studio 2013, Eigen 3.2.0 and MAGMA 1.4.0-beta2. 
+You need to first install Intel MKL, Eigen, CUDA and MAGMA. It has been tested with Intel Parallel Studio 2013, Eigen 3.2.0, CUDA 5.5 and MAGMA 1.4.0-beta2. 
 
 h2. Modus Operandis
 
