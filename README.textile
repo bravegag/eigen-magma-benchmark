@@ -31,8 +31,8 @@ add_definitions(-DEIGEN_USE_MAGMA_ALL)
 h2. Benchmark environment
 
 * ASUS Z9PE-D8 WS http://www.asus.com/Motherboards/Z9PED8_WS/
-* 2x Intel Xeon E5-2690 2.9Ghz and 3.8Ghz with turbo, 20MB cache, AVX
-* 2x EVGA nVidia Titan GTX 6GB 
+* 2x Intel Xeon E5-2690 2.9Ghz and 3.8Ghz with turbo, 20MB cache, AVX http://ark.intel.com/products/64596/
+* 2x EVGA nVidia Titan GTX 6GB http://www.evga.com/products/pdf/06G-P4-2790.pdf
 * 64GB DDR3 RAM Corsair Vengueance CMZ32GX3M4X1866C10 with 1866 Mhz clocked at 1600 Mhz 
 
 h2. Results
