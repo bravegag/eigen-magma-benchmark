@@ -132,6 +132,11 @@ static double dpotrf(long N) {
 	return N*N*N/3.0 + N*N/2.0 + N/6.0;
 }
 
+static double dgesvd(long N) {
+	Eigen::JacobiSVD<MatrixXd> svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+	return 22*N*N*N;
+}
+
 int main(int argc, char** argv) {
 #if !defined(NDEBUG) || defined(DEBUG)
 	fprintf(stderr, "Warning: you are running in debug mode - assertions are enabled. \n");
@@ -188,6 +193,9 @@ int main(int argc, char** argv) {
 			} else
 			if (function == "dpotrf") {
 				workload = dpotrf;
+			} else
+			if (function == "dgesvd") {
+				workload = dgesvd;
 			} else {
 				throw "Sorry, the function '" + function + "' is not yet implemented.";
 			}
