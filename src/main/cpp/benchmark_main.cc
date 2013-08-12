@@ -158,11 +158,11 @@ int main(int argc, char** argv) {
 		int warm_ups, num_runs;
 
 		po::options_description desc("Benchmark main options");
-		desc.add_options()("help", "produce help message")("warm-up-runs",
-				po::value<int>(&warm_ups)->default_value(3), "warm up runs e.g. 3")("num-runs",
-				po::value<int>(&num_runs)->default_value(10), "number of runs e.g. 10")("function",
-				po::value < string > (&function)->default_value("dgemm"), "Function to test e.g. dgemm, dgeqp3")("range",
-				po::value < string > (&range)->default_value("1024:10240:1024"), "N range i.e. start:stop:step");
+		desc.add_options()("help", "produce help message")
+				("warm-up-runs", po::value<int>(&warm_ups)->default_value(1), "warm up runs e.g. 1")
+				("num-runs", po::value<int>(&num_runs)->default_value(10), "number of runs e.g. 10")
+				("function", po::value < string > (&function)->default_value("dgemm"), "Function to test e.g. dgemm, dgeqp3")
+				("range", po::value < string > (&range)->default_value("1024:10240:1024"), "N range i.e. start:stop:step");
 
 		po::variables_map vm;
 		po::store(po::parse_command_line(argc, argv, desc), vm);
