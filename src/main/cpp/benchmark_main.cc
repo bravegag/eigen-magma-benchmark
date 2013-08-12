@@ -176,8 +176,7 @@ int main(int argc, char** argv) {
 			string temp = range;
 			boost::tokenizer<> tok(temp);
 			vector<long> range_values;
-			for (boost::tokenizer<>::iterator current = tok.begin(); current != tok.end();
-					++current) {
+			for (boost::tokenizer<>::iterator current = tok.begin(); current != tok.end(); ++current) {
 				range_values.push_back(boost::lexical_cast<long>(*current));
 			}
 
@@ -212,7 +211,7 @@ int main(int argc, char** argv) {
 				if (function == "dtrsm") {
 					Aqr = A.colPivHouseholderQr();
 				} else if (function == "dpotrf") {
-					// make sure A is SDP
+					// make sure A is SPD
 					A = A.adjoint() * A;
 				}
 
@@ -228,7 +227,6 @@ int main(int argc, char** argv) {
 				fflush (stderr);
 			}
 		}
-
 #if defined(EIGEN_USE_MAGMA_ALL)
 		MAGMA_FINALIZE();
 #endif
