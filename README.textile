@@ -49,12 +49,12 @@ The following plots where obtained by executing the currently ported Eigen MAGMA
 
 !https://raw.github.com/bravegag/eigen-magma-benchmark/master/results/dgemm_gflops.png!
 
-!https://github.com/bravegag/eigen-magma-benchmark/blob/master/results/dgeqp3_gflops.png(dgeqp3 Gflops)!
+!https://raw.github.com/bravegag/eigen-magma-benchmark/master/results/dgeqp3_gflops.png!
 
-!https://github.com/bravegag/eigen-magma-benchmark/blob/master/results/dgemv_gflops.png(dgemv Gflops)!
+!https://raw.github.com/bravegag/eigen-magma-benchmark/master/results/dgemv_gflops.png!
 
-!https://github.com/bravegag/eigen-magma-benchmark/blob/master/results/dtrsm_gflops.png(dtrsm Gflops)!
+!https://raw.github.com/bravegag/eigen-magma-benchmark/master/results/dtrsm_gflops.png!
 
-!https://github.com/bravegag/eigen-magma-benchmark/blob/master/results/dpotrf_gflops.png(dpotrf Gflops)!
+!https://raw.github.com/bravegag/eigen-magma-benchmark/master/results/dpotrf_gflops.png!
 
 The benchmarks above where obtained using <code>export MKL_NUM_THREADS=1</code> and <code>export OMP_NUM_THREADS=1</code> increasing the <code>MKL_NUM_THREADS</code> may improve the results for both the MKL and the MAGMA versions. Furthermore, unlike the benchmarks shown in MAGMA testing implementations these benchmark results above account for the memory transfer times from Host to Device. This is the reason why the dgemv and dtrsm do not seem to perform better than the CPU versions. 
