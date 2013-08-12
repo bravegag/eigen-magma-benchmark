@@ -60,7 +60,7 @@ typedef accumulator_set<double, stats<tag::mean, tag::variance> > bench_accumula
 static bench_accumulator real_time_acc, gflops_acc;
 
 // reusable vector and matrices
-MatrixXd A, B, C;
+MatrixXd A, B, C, L;
 VectorXd a, b, c;
 Eigen::ColPivHouseholderQR<MatrixXd> Aqr;
 
@@ -75,7 +75,7 @@ static void run_benchmark(long N, int warm_ups, int num_runs, workload_type work
 		(*workload)(N);
 
 		fprintf(stderr, ".");
-        	fflush (stderr);
+		fflush (stderr);
 	}
 
 	// actual measurements
@@ -93,48 +93,54 @@ static void run_benchmark(long N, int warm_ups, int num_runs, workload_type work
 		// use high-resolution timer
 		duration<double> sec = system_clock::now() - start;
 		real_time = sec.count();
-		gflops 	  = flop_count/(1e9*real_time);
+		gflops = flop_count / (1e9 * real_time);
 
 		// feed the accumulators
 		real_time_acc(real_time);
 		gflops_acc(gflops);
 
 		fprintf(stderr, ".");
-        	fflush (stderr);
+		fflush (stderr);
 	}
 }
 
+EIGEN_DONT_INLINE
 static double dgemm(long N) {
-	C = A*B;
+	C = A * B;
 	// flops see http://www.netlib.org/lapack/lawnspdf/lawn41.pdf page 120
-	return 2*N*N*N;
+	return 2 * N * N * N;
 }
 
+EIGEN_DONT_INLINE
 static double dgeqp3(long N) {
 	Eigen::ColPivHouseholderQR<MatrixXd> qr = A.colPivHouseholderQr();
 	// flops see http://www.netlib.org/lapack/lawnspdf/lawn41.pdf page 121
-	return N*N*N - (2/3)*N*N*N + N*N + N*N + (14/3)*N;
+	return N * N * N - (2 / 3) * N * N * N + N * N + N * N + (14 / 3) * N;
 }
 
+EIGEN_DONT_INLINE
 static double dgemv(long N) {
-	C = A*b;
-	return 2*N*N - N;
+	C = A * b;
+	return 2 * N * N - N;
 }
 
+EIGEN_DONT_INLINE
 static double dtrsm(long N) {
 	C = Aqr.solve(B);
-	return N*N*N;
+	return N * N * N;
 }
 
+EIGEN_DONT_INLINE
 static double dpotrf(long N) {
 	Eigen::LLT<MatrixXd> lltOfA(A);
-	MatrixXd L = lltOfA.matrixL();
-	return N*N*N/3.0 + N*N/2.0 + N/6.0;
+	L = lltOfA.matrixL();
+	return N * N * N / 3.0 + N * N / 2.0 + N / 6.0;
 }
 
+EIGEN_DONT_INLINE
 static double dgesvd(long N) {
 	Eigen::JacobiSVD<MatrixXd> svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
-	return 22*N*N*N;
+	return 22 * N * N * N;
 }
 
 int main(int argc, char** argv) {
@@ -152,11 +158,11 @@ int main(int argc, char** argv) {
 		int warm_ups, num_runs;
 
 		po::options_description desc("Benchmark main options");
-		desc.add_options()("help", "produce help message")
-			("warm-up-runs", po::value<int>(&warm_ups)->default_value(3), "warm up runs e.g. 3")
-			("num-runs", po::value<int>(&num_runs)->default_value(10), "number of runs e.g. 10")
-			("function", po::value<string>(&function)->default_value("dgemm"), "Function to test e.g. dgemm, dgeqp3")
-			("range", po::value<string>(&range)->default_value("1024:10240:1024"), "N range i.e. start:stop:step");
+		desc.add_options()("help", "produce help message")("warm-up-runs",
+				po::value<int>(&warm_ups)->default_value(3), "warm up runs e.g. 3")("num-runs",
+				po::value<int>(&num_runs)->default_value(10), "number of runs e.g. 10")("function",
+				po::value < string > (&function)->default_value("dgemm"), "Function to test e.g. dgemm, dgeqp3")("range",
+				po::value < string > (&range)->default_value("1024:10240:1024"), "N range i.e. start:stop:step");
 
 		po::variables_map vm;
 		po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -170,7 +176,8 @@ int main(int argc, char** argv) {
 			string temp = range;
 			boost::tokenizer<> tok(temp);
 			vector<long> range_values;
-			for (boost::tokenizer<>::iterator current = tok.begin(); current != tok.end(); ++current) {
+			for (boost::tokenizer<>::iterator current = tok.begin(); current != tok.end();
+					++current) {
 				range_values.push_back(boost::lexical_cast<long>(*current));
 			}
 
@@ -181,35 +188,32 @@ int main(int argc, char** argv) {
 			workload_type workload;
 			if (function == "dgemm") {
 				workload = dgemm;
-			} else
-			if (function == "dgeqp3") {
+			} else if (function == "dgeqp3") {
 				workload = dgeqp3;
-			} else
-			if (function == "dgemv") {
+			} else if (function == "dgemv") {
 				workload = dgemv;
-			} else
-			if (function == "dtrsm") {
+			} else if (function == "dtrsm") {
 				workload = dtrsm;
-			} else
-			if (function == "dpotrf") {
+			} else if (function == "dpotrf") {
 				workload = dpotrf;
-			} else
-			if (function == "dgesvd") {
+			} else if (function == "dgesvd") {
 				workload = dgesvd;
 			} else {
 				throw "Sorry, the function '" + function + "' is not yet implemented.";
 			}
 
-
 			for (long N = range_values[0]; N < range_values[1]; N += range_values[2]) {
-                        	// prepare the input data
-                        	A = MatrixXd::Random(N, N);
-                        	B = MatrixXd::Random(N, N);
-                        	b = VectorXd::Random(N);
+				// prepare the input data
+				A = MatrixXd::Random(N, N);
+				B = MatrixXd::Random(N, N);
+				b = VectorXd::Random(N);
 
+				// function-specific input data
 				if (function == "dtrsm") {
-					// input data specific only to this function
-                                	Aqr = A.colPivHouseholderQr();
+					Aqr = A.colPivHouseholderQr();
+				} else if (function == "dpotrf") {
+					// make sure A is SDP
+					A = A.adjoint() * A;
 				}
 
 				real_time_acc = bench_accumulator();
@@ -219,25 +223,22 @@ int main(int argc, char** argv) {
 				run_benchmark(N, warm_ups, num_runs, workload);
 
 				fprintf(stdout, "%d\t%e\t%e\n", N, mean(real_time_acc), mean(gflops_acc));
-				fflush(stdout);
-				fprintf(stderr, "%d,%e,%e\n"  , N, mean(real_time_acc), mean(gflops_acc));
-				fflush(stderr);
+				fflush (stdout);
+				fprintf(stderr, "%d,%e,%e\n", N, mean(real_time_acc), mean(gflops_acc));
+				fflush (stderr);
 			}
 		}
 
 #if defined(EIGEN_USE_MAGMA_ALL)
 		MAGMA_FINALIZE();
 #endif
-	} 
-	catch (std::exception& e) {
+	} catch (std::exception& e) {
 		cerr << "Exception: " << e.what() << "\n";
 		return EXIT_FAILURE;
-	}
-	catch (string& e) {
+	} catch (string& e) {
 		cerr << "Exception: " << e << "\n";
 		return EXIT_FAILURE;
- 	} 
-	catch (...) {
+	} catch (...) {
 		cerr << "Exception of unknown type!\n";
 		return EXIT_FAILURE;
 	}
