@@ -202,7 +202,7 @@ int main(int argc, char** argv) {
 				throw "Sorry, the function '" + function + "' is not yet implemented.";
 			}
 
-			for (long N = range_values[0]; N < range_values[1]; N += range_values[2]) {
+			for (long N = range_values[0]; N <= range_values[1]; N += range_values[2]) {
 				// prepare the input data
 				A = MatrixXd::Random(N, N);
 				B = MatrixXd::Random(N, N);
