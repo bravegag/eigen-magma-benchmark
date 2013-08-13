@@ -29,7 +29,7 @@ basedir <- "/Users/bravegag/code/eigen-magma-benchmark/results/"
 dfa <- NULL
 dfa_mt <- NULL
 
-ylimit <- 45
+ylimit <- 40
 
 impl <- "magma"
 #impl <- "cublas"
@@ -39,7 +39,8 @@ impl <- "magma"
 #func_name <- "dpotrf"
 #func_name <- "dtrsm"
 #func_name <- "dgemv"
-func_name <- "dgeqp3"
+#func_name <- "dgeqp3"
+func_name <- "dgeqrf"
 #func_name <- "dgemm"
 
 file_names <- c(paste(func_name, '_eigen', sep=""), paste(func_name, '_mkl', sep=""), paste(func_name, paste('_', impl, sep=""), sep=""))
