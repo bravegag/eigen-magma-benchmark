@@ -43,7 +43,6 @@ impl <- "cublas"
 func_name <- "dgemm"
 
 file_names <- c(paste(func_name, '_eigen', sep=""), paste(func_name, '_mkl', sep=""), paste(func_name, paste('_', impl, sep=""), sep=""))
-#file_names <- c(paste(func_name, '_eigen', sep=""), paste(func_name, '_mkl', sep=""), paste(func_name, '_cublas', sep=""))
 labels <- c('eigen', 'mkl', impl)
 i <- 1
 for (f in file_names) {
