@@ -119,6 +119,13 @@ static double dgeqp3(long N) {
 }
 
 EIGEN_DONT_INLINE
+static double dgeqrf(long N) {
+	Eigen::HouseholderQR<MatrixXd> qr = A.householderQr();
+	// flops see http://www.netlib.org/lapack/lawnspdf/lawn41.pdf page 121
+	return 2 * N * N * N - (2 / 3) * N * N * N + 3 * N * N - N * N + (14 / 3) * N;
+}
+
+EIGEN_DONT_INLINE
 static double dgemv(long N) {
 	C = A * b;
 	return 2 * N * N - N;
@@ -189,6 +196,8 @@ int main(int argc, char** argv) {
 				workload = dgemm;
 			} else if (function == "dgeqp3") {
 				workload = dgeqp3;
+			} else if (function == "dgeqrf") {
+				workload = dgeqrf;
 			} else if (function == "dgemv") {
 				workload = dgemv;
 			} else if (function == "dtrsm") {
