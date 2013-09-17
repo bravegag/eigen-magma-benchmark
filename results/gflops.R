@@ -30,13 +30,13 @@ dfa <- NULL
 dfa_mt <- NULL
 
 
-#impl <- "magma"
-impl <- "cublas"
+impl <- "magma"
+#impl <- "cublas"
 
 #func_name <- "dgesvd"
 #func_name <- "dgeqrf"
 
-#ylimit <- 300
+#ylimit <- 310
 #func_name <- "dpotrf"
 
 #ylimit <- 3
@@ -45,11 +45,11 @@ impl <- "cublas"
 #ylimit <- 10
 #func_name <- "dgemv"
 
-#ylimit <- 50
-#func_name <- "dgeqp3"
+ylimit <- 50
+func_name <- "dgeqp3"
 
-ylimit <- 800
-func_name <- "dgemm"
+#ylimit <- 900
+#func_name <- "dgemm"
 
 ## read the relevant files
 file_names <- c(paste(func_name, '_eigen', sep=""), paste(func_name, '_mkl', sep=""), paste(func_name, paste('_', impl, sep=""), sep=""))

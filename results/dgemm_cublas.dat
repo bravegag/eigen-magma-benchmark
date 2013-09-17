@@ -1,6 +1,3 @@
-MAGMA 1.4.0 , capability 3.0
-device 0: GeForce GTX TITAN, 875.5 MHz clock, 6143.3 MB memory, capability 3.5
-device 1: GeForce GTX TITAN, 875.5 MHz clock, 6143.8 MB memory, capability 3.5
 1024	9.865812e-03	2.183386e+02
 2048	4.865180e-02	3.531321e+02
 3072	1.279536e-01	4.536835e+02
