@@ -152,7 +152,7 @@ static double dgesvd(long N) {
 
 int main(int argc, char** argv) {
 #if !defined(NDEBUG) || defined(DEBUG)
-	fprintf(stderr, "Warning: you are running in debug mode - assertions are enabled. \n");
+	cerr << "Warning: you are running in debug mode - assertions are enabled." << endl;
 #endif
 
 	try {
@@ -190,7 +190,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (range_values.size() != 3) {
-				throw "Illegal range input: '" + range + "'";
+				throw std::runtime_error("Illegal range input: '" + range + "'");
 			}
 
 			workload_type workload;
@@ -209,7 +209,7 @@ int main(int argc, char** argv) {
 			} else if (function == "dgesvd") {
 				workload = dgesvd;
 			} else {
-				throw "Sorry, the function '" + function + "' is not yet implemented.";
+				throw std::runtime_error("Sorry, the function '" + function + "' is not yet implemented.");
 			}
 
 			for (long N = range_values[0]; N <= range_values[1]; N += range_values[2]) {
@@ -241,13 +241,12 @@ int main(int argc, char** argv) {
 #if defined(EIGEN_USE_MAGMA_ALL)
 		MAGMA_FINALIZE();
 #endif
-	} catch (std::exception& e) {
+	}
+	catch (std::exception& e) {
 		cerr << "Exception: " << e.what() << "\n";
 		return EXIT_FAILURE;
-	} catch (string& e) {
-		cerr << "Exception: " << e << "\n";
-		return EXIT_FAILURE;
-	} catch (...) {
+	}
+	catch (...) {
 		cerr << "Exception of unknown type!\n";
 		return EXIT_FAILURE;
 	}
