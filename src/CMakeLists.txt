@@ -5,7 +5,7 @@
 
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
-project(bench CXX Fortran)
+project(bench CXX)
 
 #*************************************************
 # Macro definitions
@@ -16,6 +16,7 @@ add_definitions(-Wno-shadow)
 
 #add_definitions(-DEIGEN_USE_MKL_ALL)
 add_definitions(-DEIGEN_USE_MAGMA_ALL)
+#add_definitions(-DEIGEN_USE_MAGMA_AND_MKL)
 
 #*************************************************
 # Project source directories
