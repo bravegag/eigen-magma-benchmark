@@ -180,8 +180,8 @@ int main(int argc, char** argv) {
 		po::notify(vm);
 
 #if defined(EIGEN_USE_MAGMA_ALL)
-                cudaSetDevice(device_id);
-                MAGMA_INIT();
+		cudaSetDevice(device_id);
+		magma_init();
 #endif
 		if (vm.count("help")) {
 			cout << desc << "\n";
@@ -258,7 +258,7 @@ int main(int argc, char** argv) {
 		delete pAqr;
 
 #if defined(EIGEN_USE_MAGMA_ALL)
-		MAGMA_FINALIZE();
+		magma_finalize();
 #endif
 	}
 	catch (std::exception& e) {
