@@ -59,10 +59,16 @@ typedef double (*workload_type)(long);
 typedef accumulator_set<double, stats<tag::mean, tag::variance> > bench_accumulator;
 static bench_accumulator real_time_acc, gflops_acc;
 
-// reusable vector and matrices
-MatrixXd A, B, C, L;
-VectorXd a, b, c;
-Eigen::ColPivHouseholderQR<MatrixXd> Aqr;
+// reusable vector and matrices. Note we need to use pointers to make sure
+// that the memory is deallocated *before* MAGMA/CUDA shutdown takes place.
+MatrixXd *pA = new MatrixXd(), *pB = new MatrixXd(), *pC = new MatrixXd(), *pL = new MatrixXd();
+VectorXd *pa = new VectorXd(), *pb = new VectorXd(), *pc = new VectorXd();
+Eigen::ColPivHouseholderQR<MatrixXd> *pAqr = new Eigen::ColPivHouseholderQR<MatrixXd>();
+
+// continue using them as before
+MatrixXd &A = *pA, &B = *pB, &C = *pC, &L = *pL;
+VectorXd &a = *pa, &b = *pb, &c = *pc;
+Eigen::ColPivHouseholderQR<MatrixXd>& Aqr = *pAqr;
 
 /// Generic benchmarking
 /**
@@ -163,11 +169,11 @@ int main(int argc, char** argv) {
 
 		po::options_description desc("Benchmark main options");
 		desc.add_options()("help", "produce help message")
-				("warm-up-runs", po::value<int>(&warm_ups)->default_value(1), "warm up runs e.g. 1")
-				("num-runs", po::value<int>(&num_runs)->default_value(10), "number of runs e.g. 10")
-				("function", po::value < string > (&function)->default_value("dgemm"), "Function to test e.g. dgemm, dgeqp3")
-				("range", po::value < string > (&range)->default_value("1024:10240:1024"), "N range i.e. start:stop:step")
-				("device-id", po::value<int>(&device_id)->default_value(0), "device id e.g. 0");
+			("warm-up-runs", po::value<int>(&warm_ups)->default_value(1), "warm up runs e.g. 1")
+			("num-runs", po::value<int>(&num_runs)->default_value(10), "number of runs e.g. 10")
+			("function", po::value < string > (&function)->default_value("dgemm"), "Function to test e.g. dgemm, dgeqp3")
+			("range", po::value < string > (&range)->default_value("1024:10240:1024"), "N range i.e. start:stop:step")
+			("device-id", po::value<int>(&device_id)->default_value(0), "device id e.g. 0");
 
 		po::variables_map vm;
 		po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -238,6 +244,19 @@ int main(int argc, char** argv) {
 				fflush (stderr);
 			}
 		}
+		
+		// now is safe to clean up
+		delete pa;
+		delete pb;
+		delete pc;
+
+		delete pA;
+		delete pB;
+		delete pC;
+		delete pL;
+
+		delete pAqr;
+
 #if defined(EIGEN_USE_MAGMA_ALL)
 		MAGMA_FINALIZE();
 #endif
